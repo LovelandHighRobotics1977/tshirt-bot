@@ -1,0 +1,4 @@
+See file:///C:/Users/jec71b99/Documents/C++%20Old%20Robot%20Code/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramReleaseExecutableFrcUserProgramCpp.
+compiling Robot.cpp successful.
+
+Finished compileFrcUserProgramReleaseExecutableFrcUserProgramCpp, see full log file:///C:/Users/jec71b99/Documents/C++%20Old%20Robot%20Code/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt.
