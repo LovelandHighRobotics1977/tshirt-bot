@@ -31,9 +31,12 @@ class Robot : public frc::TimedRobot {
 
   void TestInit() override;
   void TestPeriodic() override;
+
+  void ledAnimation(int tube);
+  void cooldown();
 private:
   frc::AddressableLED m_led{9};
-  std::array<frc::AddressableLED::LEDData, 300>m_ledBuffer;
+  std::array<frc::AddressableLED::LEDData, 299>m_ledBuffer;
   frc::XboxController m_driverController{0};
   WPI_TalonSRX m_r1{3};
   WPI_TalonSRX m_r2{4};
@@ -43,10 +46,16 @@ private:
   WPI_TalonSRX m_l3{2};
   WPI_VictorSPX gun{6};
   frc::Timer timer;
-  int r = 255;
+  int r = 0;
   int g = 0;
   int b = 0;
   int stage = 0;
+  int trigger = 0;
+  int ftube;
+  bool active = false;
+  bool cdRan = true;
+  int stage2 = 0;
+  int anRan = false;
   frc::Solenoid t1{frc::PneumaticsModuleType::CTREPCM, 0};
   frc::Solenoid t2{frc::PneumaticsModuleType::CTREPCM, 1};
   frc::Solenoid t3{frc::PneumaticsModuleType::CTREPCM, 2};
