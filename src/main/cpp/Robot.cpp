@@ -11,13 +11,21 @@
 
 
 void Robot::RobotInit() {
+  m_l1.SetNeutralMode(NeutralMode::Brake);
+  m_l2.SetNeutralMode(NeutralMode::Brake);
+  m_l3.SetNeutralMode(NeutralMode::Brake);
+  m_r1.SetNeutralMode(NeutralMode::Brake);
+  m_r2.SetNeutralMode(NeutralMode::Brake);
+  m_r3.SetNeutralMode(NeutralMode::Brake);  
+
+
    m_led.SetLength(299);
     m_led.SetData(m_ledBuffer);
     m_led.Start();
     for (int i = 0; i < 299; i++) {
       if(i < 160){
         m_ledBuffer[i].SetRGB(255, 0, 0);
-      }else if(i>170){m_ledBuffer[i].SetRGB(0, 0, 0);}
+      }else if(i>160){m_ledBuffer[i].SetRGB(0, 0, 255);}
     }
     m_led.SetData(m_ledBuffer);
 }
@@ -34,7 +42,7 @@ void Robot::AutonomousPeriodic() {
     Drive(1,1); 
   }else{
     Drive(0,0);
-  }Z*/
+  }*/
 }
 
 void Robot::TeleopInit() {}
@@ -42,18 +50,11 @@ void Robot::TeleopPeriodic() {
   // underglow led 0-160
   Aim(m_driverController.GetRightBumper(),m_driverController.GetLeftBumper());
   Drive(-m_driverController.GetLeftY(),m_driverController.GetRightY());
+  idle();
   if(active == false){
-    m_led.SetLength(299);
     m_led.SetData(m_ledBuffer);
-    m_led.Start();
-    for (int i = 0; i < 299; i++) {
-      if(i < 160){
-        m_ledBuffer[i].SetRGB(255, 0, 0);
-      }else{
-        m_ledBuffer[i].SetRGB(0, 0, 0);
-      }
-    }
-    m_led.SetData(m_ledBuffer);
+
+    if(m_driverController.GetBackButton() == 1){
     if(m_driverController.GetAButton()==1){
       ftube = 1;
       active = true;
@@ -72,6 +73,7 @@ void Robot::TeleopPeriodic() {
     if(m_driverController.GetYButton()==1){
       ftube = 4;
       active = true;
+    }
     }
   }
 
@@ -161,6 +163,77 @@ void Robot::ledAnimation(int tube){
   
 }
 
+void Robot::idle(){
+    m_led.SetLength(299);
+    m_led.SetData(m_ledBuffer);
+    m_led.Start();
+    for (int i = 0; i < 300; i++) {
+      if(i < 160){
+        m_ledBuffer[i].SetRGB(200, 0, 255);
+      }else{
+        
+
+
+
+
+	    for (int i = 0; i < 70; i++) {
+			  if (i < (leftInd - 1)) {
+				  ledIdleArr[i] = 0;
+			  }
+			  else if (i == (leftInd - 1)) {
+				  if (i > 0) {
+					  brightness = 255;
+					  ledIdleArr[i] = brightness;
+					  leftInd = i;
+				  }
+				  else if(i == 0) {
+					  leftInd = 69;
+					  ledIdleArr[69] = 255;
+				  }
+			  }
+			  else {
+				  brightness = (brightness / 2);
+				  ledIdleArr[i] = brightness;
+			  }
+		  }
+
+
+
+
+
+
+
+
+      for (int i = 138; i > 69; i--) {
+			  if (i > (rightInd + 1)) {
+				  ledIdleArr[i] = 0;
+			  }
+			  else if (i == (rightInd + 1)) {
+				  if (i < 138) {
+					  brightness2 = 255;
+					  ledIdleArr[i] = brightness2;
+					  rightInd = i;
+				  }
+				  else if(i == 138) {
+					  rightInd = 69;
+					  ledIdleArr[69] = 255;
+				  }
+			  }
+			  else {
+				  brightness2 = (brightness2 / 2);
+				  ledIdleArr[i] = brightness2;
+			  }
+		  }
+
+        for(int i = 0; i < 139; i++){
+          m_ledBuffer[(i+160)].SetRGB((ledIdleArr[i]*.79),0,ledIdleArr[i]);
+        }
+      }
+    }
+    m_led.SetData(m_ledBuffer);
+}
+
+
 void Robot::cooldown(){
   if(stage2 == 0){
     for(int j = 0; j < 299; j++){
@@ -239,6 +312,13 @@ void Robot::cooldown(){
 }
 
 void Robot::Drive(float left, float right){
+  if((left*right) <= 0){
+    left *= 0.2;
+    right *= 0.2;
+  }else{
+    left *= 0.8;
+    right *= 0.8;
+  }
   m_l1.Set(left);
   m_l2.Set(left);
   m_l3.Set(left);
