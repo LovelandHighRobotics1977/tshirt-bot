@@ -4,12 +4,13 @@
 
 #pragma once
 
+#include <iostream>
 #include <frc/TimedRobot.h>
 #include <frc/Joystick.h>
+#include <ctre/phoenix.h>
 #include <frc/XboxController.h>
-#include <ctre/Phoenix.h>
-#include <frc/TimedRobot.h>
-#include <frc/AddressableLED.h>
+#include <frc/PowerDistribution.h>
+#include <frc/PneumaticsControlModule.h>
 #include <frc/Solenoid.h>
 
 class Robot : public frc::TimedRobot {
@@ -22,9 +23,6 @@ class Robot : public frc::TimedRobot {
 
   void TeleopInit() override;
   void TeleopPeriodic() override;
-  void Drive(float left, float right);
-  void Aim(float up, float down);
-
 
   void DisabledInit() override;
   void DisabledPeriodic() override;
@@ -32,180 +30,47 @@ class Robot : public frc::TimedRobot {
   void TestInit() override;
   void TestPeriodic() override;
 
-  void ledAnimation(int tube);
-  void cooldown();
+  void SimulationInit() override;
+  void SimulationPeriodic() override;
 
-  void idle();
+  //this will never change
+  //it is used to add abstraction to the changing drive speed function
+  double OGDriveSpeed = 0.3;
 
-private:
-int ledIdleArr[139] = {
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						255,
-						255,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0
-};
-int leftInd = 69;
-int rightInd = 70;
-int brightness = 255;
-int brightness2 = 255;
-frc::AddressableLED m_led{9};
-  std::array<frc::AddressableLED::LEDData, 299>m_ledBuffer;
-  frc::XboxController m_driverController{0};
-  WPI_TalonSRX m_r1{3};
-  WPI_TalonSRX m_r2{4};
-  WPI_TalonSRX m_r3{5};
-  WPI_TalonSRX m_l1{0};
-  WPI_TalonSRX m_l2{1};
-  WPI_TalonSRX m_l3{2};
-  WPI_VictorSPX gun{6};
-  frc::Timer timer;
-  int r = 0;
-  int g = 0;
-  int b = 0;
-  int stage = 0;
-  int trigger = 0;
-  int ftube;
-  bool active = false;
-  bool cdRan = true;
-  int stage2 = 0;
-  int anRan = false;
-  frc::Solenoid t1{frc::PneumaticsModuleType::CTREPCM, 0};
-  frc::Solenoid t2{frc::PneumaticsModuleType::CTREPCM, 1};
-  frc::Solenoid t3{frc::PneumaticsModuleType::CTREPCM, 2};
-  frc::Solenoid t4{frc::PneumaticsModuleType::CTREPCM, 3};
+  //sets the robots max drive speed for the Xbox controller with dual stick (Xbox)
+  double DriveSpeed = OGDriveSpeed;
+
+  //the maximum amperadge the motors can draw before shutting off
+  int currentLimit = 8;
+  
+  //Controlls the drivetrain with the Xbox controller
+  void XboxDirection();
+
+  //Controlls the mech with the Xbox controller
+  void XboxArm();
+
+  //Makes it easier to add new controllers
+  //also adds a layer of abstraction to the code
+  void drive(double left, double right);
+
+
+  private:
+  //drive motors
+  TalonFX m_driveMotorRFront{3};
+  TalonFX m_driveMotorRBack{4};
+  TalonFX m_driveMotorRTop{5};
+  TalonFX m_driveMotorLFront{0};
+  TalonFX m_driveMotorLBack{1};
+  TalonFX m_driveMotorLTop{2};
+  //mech motors
+  TalonFX m_Angle{6};
+  //controllers
+  frc::XboxController m_XBox{0};
+  //pdh
+  frc::PowerDistribution m_pdp{1, frc::PowerDistribution::ModuleType::kCTRE};
+  //pneumatics
+  frc::Solenoid m_SolenoidLeft{frc::PneumaticsModuleType::CTREPCM, 0};
+  frc::Solenoid m_SolenoidMidLeft{frc::PneumaticsModuleType::CTREPCM, 1};
+  frc::Solenoid m_SolenoidMidRight{frc::PneumaticsModuleType::CTREPCM, 2};
+  frc::Solenoid m_SolenoidRight{frc::PneumaticsModuleType::CTREPCM, 3};
 };
