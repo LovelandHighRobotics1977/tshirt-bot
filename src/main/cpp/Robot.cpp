@@ -39,10 +39,10 @@ void Robot::XboxDirection()
   //used to controll the motors based off the joysticks
   drive(-m_XBox.GetLeftY() * DriveSpeed, m_XBox.GetRightY() * (DriveSpeed-(0.01 * DriveSpeed)));
 
-  //lowers the speed while the right bumper is pressed
-  if(m_XBox.GetRightBumper())
+  //lowers the speed while the right or left trigger is pressed
+  if(m_XBox.GetRightTriggerAxis() > 0.2 || m_XBox.GetLeftTriggerAxis() > 0.2)
   {
-    DriveSpeed = 0.3;
+    DriveSpeed = 0.2;
   }
   else
   {
@@ -55,10 +55,10 @@ void Robot::XboxDirection()
 //Left and right triggers control the raising and lowering f the arm
 void Robot::XboxArm()
 {
-  m_SolenoidLeft.Set(m_XBox.GetXButton());
-  m_SolenoidMidLeft.Set(m_XBox.GetYButton());
-  m_SolenoidMidRight.Set(m_XBox.GetAButton());
-  m_SolenoidRight.Set(m_XBox.GetBButton());
+  m_SolenoidLeft.Set(m_XBox.GetAButton());
+  m_SolenoidMidLeft.Set(m_XBox.GetBButton());
+  m_SolenoidMidRight.Set(m_XBox.GetXButton());
+  m_SolenoidRight.Set(m_XBox.GetYButton());
   if(m_XBox.GetRightBumper())
   {
      m_Angle.Set(ControlMode::PercentOutput, 1);
