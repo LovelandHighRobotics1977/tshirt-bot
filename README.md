@@ -2,6 +2,11 @@
 
 I just updated this code to the 2024 version of wpilib
 
-The angle should be controlled by the bumpers
-Solanoids controlled by the letter buttons
-Set up for dual stick tank drive
+Controlls: 
+This code is designed to be controlled with a single XBox 360 controller
+|Button|function|
+|------|--------|
+|A, B, X, Y|Fires the indavidual solanoids connected to the cannon|
+|Sticks|Each stick controlls one side of the robots drivetrain|
+|Bumpers|The bumpers controll the raising and lowering of the barels|
+|Triggers|When pressed they will slow the speed of the robot|
