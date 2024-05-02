@@ -27,6 +27,7 @@ void Robot::AutonomousPeriodic() {}
 void Robot::TeleopInit() {}
 void Robot::TeleopPeriodic() 
 {
+  //controlls the movement of the robot
   XboxArm();
   XboxDirection();
 }
@@ -81,8 +82,10 @@ void Robot::drive(double left, double right)
 {
   //checks the current on the PDH channel that each motor is on before letting them drive
   //the maximum amperage is the currentLimit value declared in the header file
-  if(m_pdp.GetCurrent(12) < currentLimit && m_pdp.GetCurrent(15) < currentLimit
-   && m_pdp.GetCurrent(0) < currentLimit && m_pdp.GetCurrent(3) < currentLimit)
+  if(m_pdp.GetCurrent(12) < currentLimit && m_pdp.GetCurrent(13) < currentLimit
+   && m_pdp.GetCurrent(14) < currentLimit && m_pdp.GetCurrent(16) < currentLimit
+   && m_pdp.GetCurrent(2) < currentLimit && m_pdp.GetCurrent(1) < currentLimit
+   && m_pdp.GetCurrent(0) < currentLimit)
    {
     m_driveMotorLBack.Set(ControlMode::PercentOutput, left);
     m_driveMotorLFront.Set(ControlMode::PercentOutput, left);

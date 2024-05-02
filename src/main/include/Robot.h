@@ -35,7 +35,7 @@ class Robot : public frc::TimedRobot {
 
   //this will never change
   //it is used to add abstraction to the changing drive speed function
-  double OGDriveSpeed = 0.35;
+  double OGDriveSpeed = 1;
 
   //sets the robots max drive speed for the Xbox controller with dual stick (Xbox)
   double DriveSpeed = OGDriveSpeed;
