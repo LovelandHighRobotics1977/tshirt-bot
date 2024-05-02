@@ -87,10 +87,10 @@ void Robot::drive(double left, double right)
   //checks the current on the PDH channel that each motor is on before letting them drive
   //the maximum amperage is the currentLimit value declared in the header file
   //used to stop th robot from "browning out" (causing the robot to disconnect to the driver station)
-  if(m_pdp.GetCurrent(12) < currentLimit && m_pdp.GetCurrent(13) < currentLimit
+  /*if(m_pdp.GetCurrent(12) < currentLimit && m_pdp.GetCurrent(13) < currentLimit
    && m_pdp.GetCurrent(14) < currentLimit && m_pdp.GetCurrent(16) < currentLimit
    && m_pdp.GetCurrent(2) < currentLimit && m_pdp.GetCurrent(1) < currentLimit
-   && m_pdp.GetCurrent(0) < currentLimit)
+   && m_pdp.GetCurrent(0) < currentLimit)*/
    {
     m_driveMotorLBack.Set(ControlMode::PercentOutput, left);
     m_driveMotorLFront.Set(ControlMode::PercentOutput, left);
@@ -100,7 +100,7 @@ void Robot::drive(double left, double right)
     m_driveMotorRTop.Set(ControlMode::PercentOutput, right);
    }
    //if the current is too high, it wont let the motors drive
-   else
+   /*else
    {
     m_driveMotorLBack.Set(ControlMode::PercentOutput, 0);
     m_driveMotorLFront.Set(ControlMode::PercentOutput, 0);
@@ -108,7 +108,7 @@ void Robot::drive(double left, double right)
     m_driveMotorRFront.Set(ControlMode::PercentOutput, 0);
     m_driveMotorLTop.Set(ControlMode::PercentOutput, 0);
     m_driveMotorRTop.Set(ControlMode::PercentOutput, 0);
-   }
+   }*/
 }
 
 void Robot::DisabledInit() {}
