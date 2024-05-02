@@ -55,6 +55,10 @@ class Robot : public frc::TimedRobot {
 
 
   private:
+  //declares the motors based on the CAN IDs to allow the roboRio to control them
+  //this is used to call these devices to set their speed and break mode
+
+
   //drive motors
   TalonFX m_driveMotorRFront{3};
   TalonFX m_driveMotorRBack{4};
@@ -68,7 +72,10 @@ class Robot : public frc::TimedRobot {
   frc::XboxController m_XBox{0};
   //pdh
   frc::PowerDistribution m_pdp{1, frc::PowerDistribution::ModuleType::kCTRE};
+
+
   //pneumatics
+  //Used for firing the T-shirts by controlling the solanoids on the barel
   frc::Solenoid m_SolenoidLeft{frc::PneumaticsModuleType::CTREPCM, 0};
   frc::Solenoid m_SolenoidMidLeft{frc::PneumaticsModuleType::CTREPCM, 1};
   frc::Solenoid m_SolenoidMidRight{frc::PneumaticsModuleType::CTREPCM, 2};

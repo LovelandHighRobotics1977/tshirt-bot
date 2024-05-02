@@ -29,6 +29,7 @@ void Robot::TeleopPeriodic()
 {
   //controlls the movement of the robot
   XboxArm();
+  //controlls the mech of the robot
   XboxDirection();
 }
 
@@ -56,10 +57,13 @@ void Robot::XboxDirection()
 //Left and right triggers control the raising and lowering f the arm
 void Robot::XboxArm()
 {
+  //Sets the fireing solanoids to the value of the button
+  //this makes it so that when the button is pressed, it will shoot the cannon
   m_SolenoidLeft.Set(m_XBox.GetAButton());
   m_SolenoidMidLeft.Set(m_XBox.GetBButton());
   m_SolenoidMidRight.Set(m_XBox.GetXButton());
   m_SolenoidRight.Set(m_XBox.GetYButton());
+  //raise and lower the barels by pressing the bumpers on the Xbox
   if(m_XBox.GetRightBumper())
   {
      m_Angle.Set(ControlMode::PercentOutput, 1);
@@ -82,6 +86,7 @@ void Robot::drive(double left, double right)
 {
   //checks the current on the PDH channel that each motor is on before letting them drive
   //the maximum amperage is the currentLimit value declared in the header file
+  //used to stop th robot from "browning out" (causing the robot to disconnect to the driver station)
   if(m_pdp.GetCurrent(12) < currentLimit && m_pdp.GetCurrent(13) < currentLimit
    && m_pdp.GetCurrent(14) < currentLimit && m_pdp.GetCurrent(16) < currentLimit
    && m_pdp.GetCurrent(2) < currentLimit && m_pdp.GetCurrent(1) < currentLimit
